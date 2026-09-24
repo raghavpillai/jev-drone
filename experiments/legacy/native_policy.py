@@ -1,5 +1,7 @@
 """Matched full-command / partial-update interfaces; Jev selects every action."""
+
 import json
+
 import numpy as np
 
 from jev_drone.planning.agent import Experiment
@@ -9,7 +11,7 @@ from jev_drone.world.world import DIRECTIONS
 def velocity_for(choice, speed):
     if choice.startswith(("slow_", "cruise_")):
         pace, direction = choice.split("_", 1)
-        return np.array(DIRECTIONS[direction])*(.25 if pace == "slow" else speed)
+        return np.array(DIRECTIONS[direction]) * (0.25 if pace == "slow" else speed)
     return np.zeros(3)
 
 
@@ -21,13 +23,22 @@ def control_options(criteria, snapshot, speed, interface):
         patch = {k: v for k, v in values.items() if v != snapshot["velocity_mps"][k]}
         name = action
         if interface == "patch" and not action.startswith(("look_", "detour_")):
-            name = "__".join(f"set_{k}_{str(v).replace('-', 'minus').replace('.', 'p')}" for k, v in patch.items()) or "keep_controls"
+            name = (
+                "__".join(
+                    f"set_{k}_{str(v).replace('-', 'minus').replace('.', 'p')}"
+                    for k, v in patch.items()
+                )
+                or "keep_controls"
+            )
         if name in options:
             # At cruise=.25, slow and cruise have equal effects but remain
             # distinct choices with their original clearance requirements.
-            name += "__"+action
-        options[name] = {"action": action, "patch": patch if interface == "patch" else values,
-                         "resulting_velocity_mps": values}
+            name += "__" + action
+        options[name] = {
+            "action": action,
+            "patch": patch if interface == "patch" else values,
+            "resulting_velocity_mps": values,
+        }
     return options
 
 
@@ -45,15 +56,20 @@ class JevExperiment(Experiment):
                 pace, direction = choice.split("_", 1)
                 depth = observation["clearance_m"][direction]
                 reasons = []
-                if depth is None or depth < (.4 if pace == "slow" else 1.3):
+                if depth is None or depth < (0.4 if pace == "slow" else 1.3):
                     reasons.append("insufficient_or_unknown_camera_clearance")
-                if speed > .15 and np.dot(velocity/speed, DIRECTIONS[direction]) < .95:
+                if speed > 0.15 and np.dot(velocity / speed, DIRECTIONS[direction]) < 0.95:
                     reasons.append("must_brake_before_this_axis_change")
                 if observation.get("predicted_risk_by_direction", {}).get(direction):
                     reasons.append("predicted_moving_obstacle_risk")
                 checks[choice] = {"violates_current_rules": bool(reasons), "reasons": reasons}
-                criteria[choice] += (" CURRENTLY PROHIBITED BY THE RULES: "+", ".join(reasons)+". Select brake first."
-                                     if reasons else " Passes the current observed movement checks; still select only if it advances your chosen goal.")
+                criteria[choice] += (
+                    " CURRENTLY PROHIBITED BY THE RULES: "
+                    + ", ".join(reasons)
+                    + ". Select brake first."
+                    if reasons
+                    else " Passes the current observed movement checks; still select only if it advances your chosen goal."
+                )
             state = {**state, "movement_checks": checks}
             instructions += "\nRead movement_checks before choosing. A movement with violates_current_rules=true is prohibited now. Select brake to stop before an axis change; do not combine braking and the new movement into one choice. These checks describe sensor evidence, not guaranteed future safety. All choices remain available and YOU are responsible for the selection.\n"
         options = None
@@ -61,15 +77,25 @@ class JevExperiment(Experiment):
         if role == "control" and interface:
             snapshot = self.world.flight.control_snapshot()
             options = control_options(criteria, snapshot, self.config.speed, interface)
-            state = {**state, "current_controls": snapshot,
-                     "control_interface": interface,
-                     "control_effects": {name: {k: v for k, v in option.items() if k != "action"}
-                                         for name, option in options.items()}}
+            state = {
+                **state,
+                "current_controls": snapshot,
+                "control_interface": interface,
+                "control_effects": {
+                    name: {k: v for k, v in option.items() if k != "action"}
+                    for name, option in options.items()
+                },
+            }
             if "movement_checks" in state:
-                state["movement_checks"] = {name: state["movement_checks"][option["action"]]
-                    for name, option in options.items() if option["action"] in state["movement_checks"]}
-            criteria = {name: json.dumps(option["patch"])+" -> "+criteria[option["action"]]
-                        for name, option in options.items()}
+                state["movement_checks"] = {
+                    name: state["movement_checks"][option["action"]]
+                    for name, option in options.items()
+                    if option["action"] in state["movement_checks"]
+                }
+            criteria = {
+                name: json.dumps(option["patch"]) + " -> " + criteria[option["action"]]
+                for name, option in options.items()
+            }
             instructions += "\nNative flight uses six continuously active body cameras. Look selects attention while braking; it does not rotate the drone. x=east, y=north, z=up. Controls are velocity setpoints in m/s, not motor throttle. Current controls and measured velocity differ because braking takes time.\n"
             if interface == "patch":
                 instructions += """\nChoose an UPDATE to current_controls. Each choice's patch sets ONLY its listed
@@ -94,8 +120,9 @@ velocity. A response based on controls that expired meanwhile will be rejected.
         if self.config.control_interface != "patch":
             return super().apply_control(choice, observation, log)
         option = log["control_options"][choice]
-        receipt = self.world.update_controls(choice, option["patch"],
-                                             log["state"]["current_controls"]["revision"])
+        receipt = self.world.update_controls(
+            choice, option["patch"], log["state"]["current_controls"]["revision"]
+        )
         log["control_receipt"] = receipt
         if not receipt["applied"]:
             self.stale += 1

@@ -11,22 +11,29 @@ the goal height. A goal coordinate is not permission to enter an obstacle.
 
 
 def describe(state, criteria):
-    remaining = state['body_goal_offset_m']['up']
-    if abs(remaining) <= state['goal_tolerance_m']['vertical'] or state['at_position']:
+    remaining = state["body_goal_offset_m"]["up"]
+    if abs(remaining) <= state["goal_tolerance_m"]["vertical"] or state["at_position"]:
         return state, criteria
-    names = ['up', 'up_creep'] if remaining > 0 else ['down', 'down_creep']
-    effects = state['control_effects']
-    permitted = [name for name in names if name in effects and not effects[name]['movement_violations']]
+    names = ["up", "up_creep"] if remaining > 0 else ["down", "down_creep"]
+    effects = state["control_effects"]
+    permitted = [
+        name for name in names if name in effects and not effects[name]["movement_violations"]
+    ]
     state = dict(state)
-    state['altitude_access'] = {
-        'remaining_m': remaining,
-        'direction': 'up' if remaining > 0 else 'down',
-        'horizontal_reached': state['horizontal_distance'] <= state['goal_tolerance_m']['horizontal'],
-        'requested_vertical_motion_permitted': bool(permitted),
-        'permitted_vertical_controls': permitted,
-        'constraints': {name: effects[name]['movement_violations'] for name in names if name in effects},
+    state["altitude_access"] = {
+        "remaining_m": remaining,
+        "direction": "up" if remaining > 0 else "down",
+        "horizontal_reached": state["horizontal_distance"]
+        <= state["goal_tolerance_m"]["horizontal"],
+        "requested_vertical_motion_permitted": bool(permitted),
+        "permitted_vertical_controls": permitted,
+        "constraints": {
+            name: effects[name]["movement_violations"] for name in names if name in effects
+        },
     }
     if not permitted:
         criteria = dict(criteria)
-        criteria['brake_and_replan'] += ' The requested height correction is blocked by observed clearance; stopping and asking for another approach is appropriate.'
+        criteria["brake_and_replan"] += (
+            " The requested height correction is blocked by observed clearance; stopping and asking for another approach is appropriate."
+        )
     return state, criteria

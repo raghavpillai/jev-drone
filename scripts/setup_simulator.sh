@@ -17,6 +17,6 @@ git -C "$px4_source" submodule update --init --recursive --depth 1 --jobs 8 \
   Tools/simulation/gz src/modules/mavlink/mavlink src/lib/events/libevents \
   src/lib/crypto/monocypher src/modules/uxrce_dds_client/Micro-XRCE-DDS-Client \
   src/lib/heatshrink/heatshrink src/drivers/gps/devices src/lib/cdrstream/cyclonedds src/lib/cdrstream/rosidl
-docker build -t jev-px4:harmonic -f docker/Dockerfile docker
+docker build -t jev-px4:harmonic -f docker/Dockerfile .
 docker run --rm -v "$task_root:/workspace" -w /workspace/.sim/PX4-Autopilot \
-  jev-px4:harmonic bash -lc 'git config --global --add safe.directory "*"; make px4_sitl_default -j16'
+  jev-px4:harmonic bash -c 'git config --global --add safe.directory "*"; make px4_sitl_default -j16'

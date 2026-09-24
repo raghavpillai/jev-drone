@@ -1,4 +1,5 @@
 """Structured task handoffs and feedback. This module cannot command the vehicle."""
+
 from experiments.legacy.search_world import ROOMS, room_at
 from experiments.legacy.sim import norm, subtract
 
@@ -27,8 +28,15 @@ You choose each waypoint. The Jev controller executes movement and avoidance. No
 
 
 def room_coverage(scene, checked):
-    return {room: {"checked": sum(name in checked for name in scene.points if name.startswith(f"search_{room}_")),
-                   "total": sum(name.startswith(f"search_{room}_") for name in scene.points)} for room in ROOMS}
+    return {
+        room: {
+            "checked": sum(
+                name in checked for name in scene.points if name.startswith(f"search_{room}_")
+            ),
+            "total": sum(name.startswith(f"search_{room}_") for name in scene.points),
+        }
+        for room in ROOMS
+    }
 
 
 def all_checked(scene, checked):
@@ -37,47 +45,97 @@ def all_checked(scene, checked):
 
 
 def planning_state(scene, sim, memory, visible, checked, recognized, report):
-    return {"mission":scene.mission,"current_room":room_at(sim.position),
-            "position_xyz":[round(x,2) for x in sim.position],"stopped":norm(sim.velocity)<=.15,
-            "known_rooms":ROOMS,"known_doorways":scene.portals,
-            "room_search_progress":room_coverage(scene,checked),
-            "all_relevant_views_checked":all_checked(scene,checked),
-            "observed_objects":[{"id":k,"appearance":v["appearance"],"room":v["room"],
-                                 "observed_surface_xyz":v["visible_surface_xyz"]} for k,v in memory.items()],
-            "visible_now":visible,"recognized_target":recognized,"local_report":report}
+    return {
+        "mission": scene.mission,
+        "current_room": room_at(sim.position),
+        "position_xyz": [round(x, 2) for x in sim.position],
+        "stopped": norm(sim.velocity) <= 0.15,
+        "known_rooms": ROOMS,
+        "known_doorways": scene.portals,
+        "room_search_progress": room_coverage(scene, checked),
+        "all_relevant_views_checked": all_checked(scene, checked),
+        "observed_objects": [
+            {
+                "id": k,
+                "appearance": v["appearance"],
+                "room": v["room"],
+                "observed_surface_xyz": v["visible_surface_xyz"],
+            }
+            for k, v in memory.items()
+        ],
+        "visible_now": visible,
+        "recognized_target": recognized,
+        "local_report": report,
+    }
 
 
 def task_options(memory):
-    tasks = {f"search_{room}": {"kind":"search_room","room":room,
-                "objective":"Find the requested object from observations; inspect remaining viewpoints.",
-                "complete_when":"target discovered or all configured room viewpoints checked",
-                "report_on":["target_discovered","views_checked","blocked"]} for room in ROOMS}
+    tasks = {
+        f"search_{room}": {
+            "kind": "search_room",
+            "room": room,
+            "objective": "Find the requested object from observations; inspect remaining viewpoints.",
+            "complete_when": "target discovered or all configured room viewpoints checked",
+            "report_on": ["target_discovered", "views_checked", "blocked"],
+        }
+        for room in ROOMS
+    }
     for object_id, item in memory.items():
-        tasks[f"approach_{object_id}"] = {"kind":"approach_object","room":item["room"],
-                 "object_id":object_id,"objective":"Approach this observed object and stop nearby.",
-                 "complete_when":"stopped at the standoff waypoint","report_on":["arrived","blocked"]}
-    criteria = {k:str(v) for k,v in tasks.items()}
+        tasks[f"approach_{object_id}"] = {
+            "kind": "approach_object",
+            "room": item["room"],
+            "object_id": object_id,
+            "objective": "Approach this observed object and stop nearby.",
+            "complete_when": "stopped at the standoff waypoint",
+            "report_on": ["arrived", "blocked"],
+        }
+    criteria = {k: str(v) for k, v in tasks.items()}
     criteria.update(report_options(memory))
     return tasks, criteria
 
 
 def report_options(memory):
-    return {"report_not_found":"End the search: all relevant configured views checked, no target identified.",
-            **{f"report_found_{k}":f"Report {k} found: matches the mission, currently visible within 2.1 m, and stopped." for k in memory}}
+    return {
+        "report_not_found": "End the search: all relevant configured views checked, no target identified.",
+        **{
+            f"report_found_{k}": f"Report {k} found: matches the mission, currently visible within 2.1 m, and stopped."
+            for k in memory
+        },
+    }
 
 
 def waypoint_options(scene, sim, memory, checked, attempts, task=None):
-    points = {k:dict(v) for k,v in scene.points.items()}
+    points = {k: dict(v) for k, v in scene.points.items()}
     for object_id, obj in memory.items():
-        points[f"approach_{object_id}"] = {"xyz":obj["approach_xyz"],"room":obj["room"],
-                                            "description":f"Approach observed {object_id}: {obj['appearance']}"}
+        points[f"approach_{object_id}"] = {
+            "xyz": obj["approach_xyz"],
+            "room": obj["room"],
+            "description": f"Approach observed {object_id}: {obj['appearance']}",
+        }
     if task:
         # Action scope comes only from the planner's task, never from hidden geometry.
-        points = {k:v for k,v in points.items() if k.startswith("door_") or
-                  (task["kind"] == "search_room" and k.startswith(f"search_{task['room']}_")) or
-                  (task["kind"] == "approach_object" and k == f"approach_{task['object_id']}")}
-    candidates = {k:{**v,"visited":k in checked,"attempts":attempts.count(k),
-                       "distance_metres":round(norm(subtract(v["xyz"],sim.position)),2)} for k,v in points.items()}
-    criteria = {k:v["description"] for k,v in points.items()}
-    criteria.update({"report_blocked":"The assigned task cannot make progress; ask the mission planner to revise it."} if task else report_options(memory))
+        points = {
+            k: v
+            for k, v in points.items()
+            if k.startswith("door_")
+            or (task["kind"] == "search_room" and k.startswith(f"search_{task['room']}_"))
+            or (task["kind"] == "approach_object" and k == f"approach_{task['object_id']}")
+        }
+    candidates = {
+        k: {
+            **v,
+            "visited": k in checked,
+            "attempts": attempts.count(k),
+            "distance_metres": round(norm(subtract(v["xyz"], sim.position)), 2),
+        }
+        for k, v in points.items()
+    }
+    criteria = {k: v["description"] for k, v in points.items()}
+    criteria.update(
+        {
+            "report_blocked": "The assigned task cannot make progress; ask the mission planner to revise it."
+        }
+        if task
+        else report_options(memory)
+    )
     return points, candidates, criteria

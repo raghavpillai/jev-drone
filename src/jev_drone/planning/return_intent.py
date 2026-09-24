@@ -1,6 +1,6 @@
 """Describe room boundaries during return without selecting a route or control."""
-from copy import deepcopy
 
+from copy import deepcopy
 
 INSTRUCTIONS = """
 For return_to_launch, first return to the launch ROOM, then reach the launch
@@ -21,29 +21,41 @@ Do not restart room search on return. All task and control choices remain yours.
 
 
 def describe(state, criteria):
-    if 'dock' not in state.get('objective', {}):
+    if "dock" not in state.get("objective", {}):
         return state, criteria
     state, criteria = deepcopy(state), dict(criteria)
-    current = state['sensors']['room']
-    launch = state['ACTIVE_OBJECTIVE']['room']
-    state['return_progress'] = {
-        'phase': 'DOCK_WITHIN_LAUNCH_ROOM' if current == launch else 'RETURN_TO_LAUNCH_ROOM',
-        'current_room': current, 'launch_room': launch,
-        'outbound_pose_history_includes_search_detours': True,
+    current = state["sensors"]["room"]
+    launch = state["ACTIVE_OBJECTIVE"]["room"]
+    state["return_progress"] = {
+        "phase": "DOCK_WITHIN_LAUNCH_ROOM" if current == launch else "RETURN_TO_LAUNCH_ROOM",
+        "current_room": current,
+        "launch_room": launch,
+        "outbound_pose_history_includes_search_detours": True,
     }
-    for name, option in state['options'].items():
-        if not name.startswith('retrace_'):
+    for name, option in state["options"].items():
+        if not name.startswith("retrace_"):
             continue
-        destination = option.get('room')
+        destination = option.get("room")
         if destination is None or destination == current:
             continue
-        door = next((edge['door'] for edge in state['known_room_connections'].get(current, [])
-                     if edge['room'] == destination), None)
-        option['requires_room_transition'] = True
-        option['connecting_door'] = door
-        option['available_doorway_tasks'] = [prefix+door for prefix in ('approach_', 'cross_')
-                                            if door and prefix+door in state['options']]
+        door = next(
+            (
+                edge["door"]
+                for edge in state["known_room_connections"].get(current, [])
+                if edge["room"] == destination
+            ),
+            None,
+        )
+        option["requires_room_transition"] = True
+        option["connecting_door"] = door
+        option["available_doorway_tasks"] = [
+            prefix + door
+            for prefix in ("approach_", "cross_")
+            if door and prefix + door in state["options"]
+        ]
         if name in criteria:
-            criteria[name] += (' This point is in another room. Cross the known opening with its doorway task; '
-                               'do not treat a diagonal across the wall as a local bypass.')
+            criteria[name] += (
+                " This point is in another room. Cross the known opening with its doorway task; "
+                "do not treat a diagonal across the wall as a local bypass."
+            )
     return state, criteria

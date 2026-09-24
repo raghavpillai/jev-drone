@@ -1,11 +1,11 @@
 """Recorded-state Jev comparison; this candidate is not the live flight policy."""
+
 import argparse
-from copy import deepcopy
 import json
+from copy import deepcopy
 from pathlib import Path
 
 from jev_drone.gateway import JevGateway, load_credential
-
 
 CONTINUITY = """
 For return_to_launch, a retrace waypoint that ARRIVED is evidence that the return
@@ -30,19 +30,27 @@ def states():
     ]
     selected = []
     for name, kind, count in sources:
-        root = Path("results")/name
-        result = json.loads((root/"result.json").read_text())
-        journal = [json.loads(line) for line in (root/"calls.jsonl").read_text().splitlines()]
+        root = Path("results") / name
+        result = json.loads((root / "result.json").read_text())
+        journal = [json.loads(line) for line in (root / "calls.jsonl").read_text().splitlines()]
         found = []
         for index, (call, raw) in enumerate(zip(result["calls"], journal)):
             if call["role"] != "planner_mode" or raw.get("error"):
                 continue
             state = raw["state"]
             previous = state.get("recent_tasks", [])[-1:]
-            match = (previous and previous[0]["name"].startswith("retrace_")
-                     and previous[0]["outcome"] == "arrived"
-                     and any(n.startswith("retrace_") for n in state["options"])) if kind == "after_retrace" else (
-                state["dock_ready"] if kind == "dock_ready" else "marker" in state["objective"])
+            match = (
+                (
+                    previous
+                    and previous[0]["name"].startswith("retrace_")
+                    and previous[0]["outcome"] == "arrived"
+                    and any(n.startswith("retrace_") for n in state["options"])
+                )
+                if kind == "after_retrace"
+                else (
+                    state["dock_ready"] if kind == "dock_ready" else "marker" in state["objective"]
+                )
+            )
             if match:
                 found.append((name, kind, index, call["time"], raw))
         if len(found) < count:
@@ -57,14 +65,25 @@ def main():
     args = parser.parse_args()
     selected = states()
     args.out.mkdir(parents=True, exist_ok=False)
-    (args.out/"protocol.json").write_text(json.dumps({
-        "states": [{"trial": n, "kind": k, "call_index": i, "sim_time": t} for n,k,i,t,_ in selected],
-        "repeats": 2, "variants": ["baseline", "return_continuity"],
-        "candidate_instruction": CONTINUITY,
-        "limitation": "Mode selection probe, not a flight success or route safety test.",
-    }, indent=2)+"\n")
-    gateway = JevGateway("openrouter", load_credential("openrouter", Path(".env")),
-                         journal=args.out/"calls.jsonl")
+    (args.out / "protocol.json").write_text(
+        json.dumps(
+            {
+                "states": [
+                    {"trial": n, "kind": k, "call_index": i, "sim_time": t}
+                    for n, k, i, t, _ in selected
+                ],
+                "repeats": 2,
+                "variants": ["baseline", "return_continuity"],
+                "candidate_instruction": CONTINUITY,
+                "limitation": "Mode selection probe, not a flight success or route safety test.",
+            },
+            indent=2,
+        )
+        + "\n"
+    )
+    gateway = JevGateway(
+        "openrouter", load_credential("openrouter", Path(".env")), journal=args.out / "calls.jsonl"
+    )
     rows = []
     try:
         for name, kind, index, time, raw in selected:
@@ -76,15 +95,25 @@ def main():
                     question = deepcopy(raw["questions"]["selection"])
                     if variant != "baseline":
                         question["instructions"] += CONTINUITY
-                    response = gateway.choose(raw["state"], question["instructions"], question["criteria"])
-                    row = dict(trial=name, kind=kind, call_index=index, sim_time=time, repeat=repeat,
-                               variant=variant, choice=response.get("choice"), error=response.get("error"),
-                               latency_seconds=response["latency_seconds"])
+                    response = gateway.choose(
+                        raw["state"], question["instructions"], question["criteria"]
+                    )
+                    row = dict(
+                        trial=name,
+                        kind=kind,
+                        call_index=index,
+                        sim_time=time,
+                        repeat=repeat,
+                        variant=variant,
+                        choice=response.get("choice"),
+                        error=response.get("error"),
+                        latency_seconds=response["latency_seconds"],
+                    )
                     rows.append(row)
                     print(json.dumps(row), flush=True)
     finally:
         gateway.close()
-        (args.out/"results.json").write_text(json.dumps(rows, indent=2)+"\n")
+        (args.out / "results.json").write_text(json.dumps(rows, indent=2) + "\n")
 
 
 if __name__ == "__main__":

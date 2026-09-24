@@ -1,4 +1,5 @@
 from argparse import Namespace
+
 import pytest
 
 from experiments.legacy.run import episode, sample_history
@@ -13,17 +14,24 @@ class FixedController:
 
 
 def args():
-    return Namespace(speed=1., seconds=1., max_calls=10, timing="delayed", max_age=.8,
-                     episode_budget=.025, policy="jev")
+    return Namespace(
+        speed=1.0,
+        seconds=1.0,
+        max_calls=10,
+        timing="delayed",
+        max_age=0.8,
+        episode_budget=0.025,
+        policy="jev",
+    )
 
 
 def test_response_is_applied_after_delay_and_old_command_keeps_moving():
-    result = episode(args(), "open", 0, FixedController(.6))
-    assert result["simulation_seconds"] == 1.
-    assert result["decisions"][0]["received_at"] == pytest.approx(.6)
+    result = episode(args(), "open", 0, FixedController(0.6))
+    assert result["simulation_seconds"] == 1.0
+    assert result["decisions"][0]["received_at"] == pytest.approx(0.6)
     assert result["decisions"][0]["accepted"]
     assert not result["decisions"][1]["accepted"]
-    assert result["path_metres"] == pytest.approx(.16, abs=.001)
+    assert result["path_metres"] == pytest.approx(0.16, abs=0.001)
 
 
 def test_stale_response_cannot_start_movement():
@@ -38,5 +46,5 @@ def test_history_sampling_preserves_earliest_and_latest_observations():
         sampled = sample_history(list(range(length)))
         assert len(sampled) == 24
         assert sampled[0] == 0
-        assert sampled[-1] == length-1
+        assert sampled[-1] == length - 1
         assert sampled == sorted(set(sampled))

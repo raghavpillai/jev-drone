@@ -1,6 +1,6 @@
 """Decision presentation experiments; every action remains available to Jev."""
-from copy import deepcopy
 
+from copy import deepcopy
 
 BRAKING = """
 SAFETY TAKES PRIORITY OVER PROGRESS. Never select a control whose
@@ -17,17 +17,21 @@ def braking_facts(state, criteria):
     state, criteria = deepcopy(state), dict(criteria)
     current = state["current_controls"]["body_controls"]
     observation = state["sensors"]
-    moving = observation["speed"] > .10 or abs(observation["yaw_rate_rps"]) > .10
+    moving = observation["speed"] > 0.10 or abs(observation["yaw_rate_rps"]) > 0.10
     braking = not any(current.values()) and moving
     state["neutral_controls_still_braking"] = braking
-    state["holding_position_away_from_goal"] = not any(current.values()) and not moving and not state["at_position"]
+    state["holding_position_away_from_goal"] = (
+        not any(current.values()) and not moving and not state["at_position"]
+    )
     for name, effect in state["control_effects"].items():
         reasons = effect.get("movement_violations", [])
         if reasons:
             criteria[name] = "DO NOT SELECT: violates " + ", ".join(reasons) + ". " + criteria[name]
         if name == "keep_controls" and braking:
             effect["progress"] = "braking_measured_motion"
-            criteria[name] = "Keep neutral controls while PX4 brakes measured residual motion. Wait for the drone to stop; this is NOT a stalled hover."
+            criteria[name] = (
+                "Keep neutral controls while PX4 brakes measured residual motion. Wait for the drone to stop; this is NOT a stalled hover."
+            )
     return state, criteria
 
 
@@ -45,11 +49,16 @@ def heading_facts(state, criteria):
     state, criteria = deepcopy(state), dict(criteria)
     task = state["task"]
     required = state.get("required_heading_degrees") is not None or (
-        state["at_position"] and bool(task.get("look") or task.get("look_position")))
+        state["at_position"] and bool(task.get("look") or task.get("look_position"))
+    )
     state["heading_requirement"] = "required_now" if required else "free_during_translation"
     if not required:
         for name, effect in state["control_effects"].items():
             old = effect["turn_effect"]
-            effect["turn_effect"] = "optional_pan" if effect["resulting_controls"]["yaw_rate_rps"] else "maintain_heading"
+            effect["turn_effect"] = (
+                "optional_pan"
+                if effect["resulting_controls"]["yaw_rate_rps"]
+                else "maintain_heading"
+            )
             criteria[name] = criteria[name].replace(old, effect["turn_effect"])
     return state, criteria

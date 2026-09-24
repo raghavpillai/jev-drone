@@ -23,9 +23,9 @@ def test_encodings_preserve_measurements_and_unknowns():
 def test_delayed_observations_use_past_pose_and_preserve_unknown():
     sim = Simulation(world("doorway", 0))
     sim.command("forward")
-    sim.advance(.7)
+    sim.advance(0.7)
     common, readings = observe(sim, [], "direct", True, 0)
-    assert common["sensor"]["age_seconds"] >= .3-1e-3
+    assert common["sensor"]["age_seconds"] >= 0.3 - 1e-3
     assert common["sensor"]["capture_position"][0] < sim.position[0]
     assert all(v is None or 0 <= v <= 3 for v in readings.values())
     for variant in ("numeric", "facts", "grid", "brief"):
@@ -35,9 +35,13 @@ def test_delayed_observations_use_past_pose_and_preserve_unknown():
 
 def test_unobserved_geometry_cannot_affect_readings():
     from dataclasses import replace
+
     from experiments.legacy.sim import Box
+
     base = world("doorway", 0)
     hidden = Box((10, 1, 0), (11, 2, 3))
     a = observe(Simulation(base), [], "direct", False, 0)
-    b = observe(Simulation(replace(base, obstacles=base.obstacles+(hidden,))), [], "direct", False, 0)
+    b = observe(
+        Simulation(replace(base, obstacles=base.obstacles + (hidden,))), [], "direct", False, 0
+    )
     assert a == b

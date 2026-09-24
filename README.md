@@ -10,7 +10,7 @@ This is a working research prototype. It has completed multi-room searches, but 
 
 ## Try the demo
 
-You only need Node.js/npm and Python 3 for the recorded demo. No API key, Docker, or simulator setup is required.
+You only need Node.js/npm and [uv](https://docs.astral.sh/uv/getting-started/installation/) for the recorded demo. uv runs the Python file server without installing the simulator dependencies. No API key, Docker, or simulator setup is required.
 
 ```bash
 npm ci --prefix demo
@@ -50,13 +50,10 @@ Jev receives structured facts and a finite set of choices, not camera pixels or 
 
 The native simulator setup targets **Linux with Docker**, Python 3.10, and a multicore CPU. It pins PX4 v1.17.0 to a tested commit and builds a Gazebo Harmonic image. The initial setup downloads and builds substantial dependencies.
 
-Run commands from the repository root:
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run commands from the repository root. `uv sync` creates `.venv` using the checked-in Python version and dependency lockfile:
 
 ```bash
-python3.10 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-pip install -e '.[dev,video]'
+uv sync --locked
 
 bash scripts/setup_simulator.sh
 cp .env.example .env
@@ -78,7 +75,7 @@ The mission starts away from the workshop and must find its red marker. `--find-
 To run the two find-only demonstration cases:
 
 ```bash
-python -m jev_drone.sim.suite \
+uv run --locked python -m jev_drone.sim.suite \
   --protocol experiments/protocols/native/protocol-house-find-video.json \
   --workers 2 --out results/my-batch
 ```
@@ -121,7 +118,17 @@ Start with [`control/policy.py`](src/jev_drone/control/policy.py) for the local 
 
 ## Check the setup
 
-Run the full Python suite inside the simulator image:
+Run Ruff and the Python tests with the locked development environment:
+
+```bash
+uv run --locked ruff check .
+uv run --locked ruff format --check .
+uv run --locked pytest -q
+```
+
+Use `uv run ruff check --fix .` and `uv run ruff format .` to apply lint fixes and formatting. GitHub Actions runs the same checks on pushes and pull requests. Generated experiments and frozen source snapshots are excluded from Ruff.
+
+Tests that need native simulator dependencies skip on the host. Run the full suite inside the simulator image, which also installs its Python dependencies from `uv.lock`:
 
 ```bash
 docker run --rm -e PYTHONPATH=/workspace/src \
@@ -137,8 +144,8 @@ bash scripts/run_mission.sh --body-check --out results/body-check
 For browser checks, leave the demo server running in another terminal:
 
 ```bash
-python -m playwright install chromium
-python -m tests.browser.check_preview
+uv run --locked --extra video playwright install chromium
+uv run --locked --extra video python -m tests.browser.check_preview
 ```
 
 ## Export your own replay or MP4
@@ -146,15 +153,16 @@ python -m tests.browser.check_preview
 Export a completed mission and its Jev state. Supplying multiple paths to `--source` includes multiple recordings in the viewer's menu. This replaces the demo index.
 
 ```bash
-python -m tools.demo.export_house_demo --source results/my-mission
-python -m tools.demo.export_state_replay \
+uv run --locked python -m tools.demo.export_house_demo --source results/my-mission
+uv run --locked python -m tools.demo.export_state_replay \
   --source results/my-mission --out demo/data/state-replay.json
 ```
 
 With the demo server running, render the item-search portion:
 
 ```bash
-python -m tools.demo.render_video --speed 12 --out report/my-mission.mp4
+uv run --locked --extra video python -m tools.demo.render_video \
+  --speed 12 --out report/my-mission.mp4
 ```
 
 The exporter renders fixed-time 1080p frames, encodes at 30 fps, then decodes the MP4 to verify frame count, timing, and repeated frames. It also writes a provenance manifest beside the video.

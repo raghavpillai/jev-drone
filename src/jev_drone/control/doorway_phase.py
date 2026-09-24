@@ -16,15 +16,25 @@ never override movement_violations. Every control choice is yours.
 
 
 def describe(state, criteria):
-    alignment = state.get('doorway_alignment')
-    if alignment is None or state.get('active_detour'):
+    alignment = state.get("doorway_alignment")
+    if alignment is None or state.get("active_detour"):
         return state, criteria
     state = dict(state)
-    heading_ready = abs(alignment['heading_error_degrees']) <= 8
-    lateral_ready = abs(alignment['centerline_offset_m']) <= .20
-    vertical_ready = abs(alignment['altitude_error_m']) <= state['goal_tolerance_m']['vertical']
-    phase = 'FACE_OPENING' if not heading_ready else 'CENTER_IN_OPENING' if not (lateral_ready and vertical_ready) else 'CROSS_OPENING'
-    state['doorway_phase'] = {'phase':phase, 'heading_aligned':heading_ready,
-        'centerline_aligned':lateral_ready, 'altitude_aligned':vertical_ready,
-        'diagonal_goal_path_is_not_the_aligned_crossing':phase != 'CROSS_OPENING'}
+    heading_ready = abs(alignment["heading_error_degrees"]) <= 8
+    lateral_ready = abs(alignment["centerline_offset_m"]) <= 0.20
+    vertical_ready = abs(alignment["altitude_error_m"]) <= state["goal_tolerance_m"]["vertical"]
+    phase = (
+        "FACE_OPENING"
+        if not heading_ready
+        else "CENTER_IN_OPENING"
+        if not (lateral_ready and vertical_ready)
+        else "CROSS_OPENING"
+    )
+    state["doorway_phase"] = {
+        "phase": phase,
+        "heading_aligned": heading_ready,
+        "centerline_aligned": lateral_ready,
+        "altitude_aligned": vertical_ready,
+        "diagonal_goal_path_is_not_the_aligned_crossing": phase != "CROSS_OPENING",
+    }
     return state, criteria

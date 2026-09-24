@@ -1,11 +1,12 @@
 """Infrastructure-only flight and sensor check, with no model calls."""
+
 import argparse
 import json
-from pathlib import Path
 import time
+from pathlib import Path
 
-from jev_drone.world.world import Config
 from jev_drone.sim.session import Session
+from jev_drone.world.world import Config
 
 
 def main():
@@ -20,13 +21,22 @@ def main():
         session.flight.takeoff(session.scene["start"])
         print("Hover", session.flight.position, session.flight.velocity, flush=True)
         time.sleep(3)
-        result = {"position": session.flight.position.tolist(), "velocity": session.flight.velocity.tolist(),
-                  "truth": session.transport.truth[1].tolist() if session.transport.truth else None,
-                  "sim_time": session.transport.time,
-                  "cameras": {name: {kind: [(t, a.shape) for t, a in list(items)[-1:]] for kind, items in channels.items()}
-                              for name, channels in session.transport.images.items()},
-                  "contacts": list(session.transport.contacts)[-3:], "messages": list(session.flight.messages)}
-        (args.out/"smoke.json").write_text(json.dumps(result, indent=2))
+        result = {
+            "position": session.flight.position.tolist(),
+            "velocity": session.flight.velocity.tolist(),
+            "truth": session.transport.truth[1].tolist() if session.transport.truth else None,
+            "sim_time": session.transport.time,
+            "cameras": {
+                name: {
+                    kind: [(t, a.shape) for t, a in list(items)[-1:]]
+                    for kind, items in channels.items()
+                }
+                for name, channels in session.transport.images.items()
+            },
+            "contacts": list(session.transport.contacts)[-3:],
+            "messages": list(session.flight.messages),
+        }
+        (args.out / "smoke.json").write_text(json.dumps(result, indent=2))
         print(json.dumps(result), flush=True)
     finally:
         session.close()

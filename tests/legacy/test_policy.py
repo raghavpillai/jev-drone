@@ -7,25 +7,39 @@ from experiments.legacy.sim import ACTIONS, Simulation, scenario
 def test_transport_preserves_live_answer_and_cost():
     controller = Jev("test-key")
     controller.client.close()
-    answer = {"choice": "left", "confidence": .8,
-              "probabilities": {a: float(a == "left") for a in ACTIONS}}
-    controller.client = httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(200, json={
-        "answers": {"movement": answer, "intent": {"choice": "pass_left"}},
-        "model": "test-version", "usage": {"cost": .0001}})))
+    answer = {
+        "choice": "left",
+        "confidence": 0.8,
+        "probabilities": {a: float(a == "left") for a in ACTIONS},
+    }
+    controller.client = httpx.Client(
+        transport=httpx.MockTransport(
+            lambda request: httpx.Response(
+                200,
+                json={
+                    "answers": {"movement": answer, "intent": {"choice": "pass_left"}},
+                    "model": "test-version",
+                    "usage": {"cost": 0.0001},
+                },
+            )
+        )
+    )
     try:
         result = controller.decide(Simulation(scenario("pillar", 0)).observation([]))
         assert result["action"] == "left"
         assert result["intent"] == "pass_left"
-        assert result["usage"]["cost"] == .0001
+        assert result["usage"]["cost"] == 0.0001
     finally:
         controller.close()
 
 
 def test_api_error_does_not_retry_or_expose_response_contents():
     calls = []
+
     def respond(request):
         calls.append(request)
         return httpx.Response(429, text="arbitrary server body")
+
     controller = Jev("test-key")
     controller.client.close()
     controller.client = httpx.Client(transport=httpx.MockTransport(respond))
@@ -41,7 +55,7 @@ def test_api_error_does_not_retry_or_expose_response_contents():
 
 def test_sensor_description_retains_blocked_actions_for_model_to_choose():
     sim = Simulation(scenario("pillar", 0))
-    sim.position = (4.1, 5., 1.)
+    sim.position = (4.1, 5.0, 1.0)
     text = sensor_text(sim.observation([]))
     assert "forward: BLOCKED" in text
     assert "left: OPEN" in text

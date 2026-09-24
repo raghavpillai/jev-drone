@@ -14,19 +14,33 @@ The remembered intention is not an automatic route or a safety guarantee.
 
 def describe(state, criteria):
     state, criteria = dict(state), dict(criteria)
-    previous = next((task for task in reversed(state.get("recent_tasks", []))
-                     if task.get("leads_to_room") is not None
-                     and task.get('mission_stage',0)==state.get('stage',0)), None)
+    previous = next(
+        (
+            task
+            for task in reversed(state.get("recent_tasks", []))
+            if task.get("leads_to_room") is not None
+            and task.get("mission_stage", 0) == state.get("stage", 0)
+        ),
+        None,
+    )
     state["room_transit_intent"] = None
     if previous is None or previous["leads_to_room"] == state["sensors"]["room"]:
         return state, criteria
     door = previous["name"].split("_", 1)[1]
-    state["room_transit_intent"] = {"door": door, "next_room": previous["leads_to_room"],
-        "selected_task": previous["name"], "outcome": previous["outcome"],
-        "crossing_available": "cross_"+door in state["options"]}
-    for name in ("approach_"+door, "cross_"+door):
+    state["room_transit_intent"] = {
+        "door": door,
+        "next_room": previous["leads_to_room"],
+        "selected_task": previous["name"],
+        "outcome": previous["outcome"],
+        "crossing_available": "cross_" + door in state["options"],
+    }
+    for name in ("approach_" + door, "cross_" + door):
         if name in criteria:
-            criteria[name] += " Continues the room leg you selected toward "+previous["leads_to_room"]+"."
+            criteria[name] += (
+                " Continues the room leg you selected toward " + previous["leads_to_room"] + "."
+            )
             if name.startswith("cross_"):
-                criteria[name] += " Crossing is available NOW; complete this leg before choosing the following room."
+                criteria[name] += (
+                    " Crossing is available NOW; complete this leg before choosing the following room."
+                )
     return state, criteria

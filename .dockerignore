@@ -1,0 +1,6 @@
+**
+!pyproject.toml
+!uv.lock
+!.python-version
+!docker/
+!docker/Dockerfile

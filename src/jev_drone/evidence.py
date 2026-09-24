@@ -1,7 +1,8 @@
 """Freeze importable source packages alongside a recorded experiment."""
+
 import hashlib
-from pathlib import Path
 import shutil
+from pathlib import Path
 
 
 def snapshot_sources(destination, *, experiments=False):
@@ -13,7 +14,11 @@ def snapshot_sources(destination, *, experiments=False):
         roots["experiments"] = Path(research.__file__).resolve().parent
     destination.mkdir(parents=True, exist_ok=True)
     for name, source in roots.items():
-        shutil.copytree(source, destination / name,
-                        ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
-    return {str(path.relative_to(destination)): hashlib.sha256(path.read_bytes()).hexdigest()
-            for path in sorted(destination.rglob("*")) if path.is_file()}
+        shutil.copytree(
+            source, destination / name, ignore=shutil.ignore_patterns("__pycache__", "*.pyc")
+        )
+    return {
+        str(path.relative_to(destination)): hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in sorted(destination.rglob("*"))
+        if path.is_file()
+    }

@@ -2,9 +2,14 @@ from jev_drone.planning.room_intent import describe
 
 
 def test_intermediate_room_intention_survives_a_stalled_approach():
-    state = {"objective": {"room": "bedroom"}, "sensors": {"room": "living"},
-        "recent_tasks": [{"name": "approach_living_study", "leads_to_room": "study", "outcome": "stalled"}],
-        "options": {"cross_living_study": {}, "approach_living_bedroom": {}, "give_up": {}}}
+    state = {
+        "objective": {"room": "bedroom"},
+        "sensors": {"room": "living"},
+        "recent_tasks": [
+            {"name": "approach_living_study", "leads_to_room": "study", "outcome": "stalled"}
+        ],
+        "options": {"cross_living_study": {}, "approach_living_bedroom": {}, "give_up": {}},
+    }
     criteria = dict.fromkeys(state["options"], "Original.")
     enriched, described = describe(state, criteria)
     assert enriched["room_transit_intent"]["next_room"] == "study"

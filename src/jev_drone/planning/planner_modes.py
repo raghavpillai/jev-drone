@@ -1,4 +1,5 @@
 """Jev selects the task family before selecting a concrete navigation task."""
+
 from jev_drone.planning.return_intent import INSTRUCTIONS as RETURN_INSTRUCTIONS
 
 INSTRUCTIONS = "You are Jev, planning a drone mission. Select the kind of task needed NOW. Read ACTIVE_OBJECTIVE, current room, readiness, task outcomes and options. Rooms and doors are known; furniture is observed only through cameras. This decision does not move the drone or complete an objective."
@@ -19,8 +20,12 @@ MODES = {
 def available_modes(state):
     # A dock objective has no object to search for or approach. Navigation
     # alternatives remain Jev choices, including deliberate backtracking.
-    if 'dock' in state.get('objective', {}):
-        return {name: description for name, description in MODES.items() if name not in ('search', 'approach')}
+    if "dock" in state.get("objective", {}):
+        return {
+            name: description
+            for name, description in MODES.items()
+            if name not in ("search", "approach")
+        }
     return dict(MODES)
 
 

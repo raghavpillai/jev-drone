@@ -1,10 +1,11 @@
 """Test whether optional travel heading avoids unnecessary Jev turning."""
+
 import argparse
 import json
 from pathlib import Path
 
-from jev_drone.gateway import JevGateway, load_credential
 from jev_drone.control.decision_instructions import BRAKING, TRAVEL, braking_facts, heading_facts
+from jev_drone.gateway import JevGateway, load_credential
 
 
 def main():
@@ -19,15 +20,22 @@ def main():
         candidates = []
         for call in calls:
             state = call["state"]
-            if (call["role"] != "control" or not call.get("accepted") or state["at_position"]
-                    or state.get("required_heading_degrees") is not None or state["active_detour"]
-                    or state["goal_path_status"] != "OBSERVED_CLEAR" or state["horizontal_distance"] < .5):
+            if (
+                call["role"] != "control"
+                or not call.get("accepted")
+                or state["at_position"]
+                or state.get("required_heading_degrees") is not None
+                or state["active_detour"]
+                or state["goal_path_status"] != "OBSERVED_CLEAR"
+                or state["horizontal_distance"] < 0.5
+            ):
                 continue
             if state["control_effects"][call["choice"]]["resulting_controls"]["yaw_rate_rps"]:
                 candidates.append(call)
-        cases.extend((path.parent.name, c) for c in candidates[::max(1,len(candidates)//3)][:3])
-    gateway = JevGateway("openrouter", load_credential("openrouter", Path(".env")),
-                         journal=args.out/"calls.jsonl")
+        cases.extend((path.parent.name, c) for c in candidates[:: max(1, len(candidates) // 3)][:3])
+    gateway = JevGateway(
+        "openrouter", load_credential("openrouter", Path(".env")), journal=args.out / "calls.jsonl"
+    )
     rows = []
     try:
         for trial, call in cases:
@@ -45,16 +53,28 @@ def main():
                     result = gateway.choose(state, instructions, criteria)
                     effect = state["control_effects"].get(result.get("choice"), {})
                     values = effect.get("resulting_controls", {})
-                    row = dict(trial=trial, time=call["time"], repeat=repeat, variant=variant,
-                        choice=result.get("choice"), braking_instructions=args.with_braking, violations=effect.get("movement_violations"),
-                        pan=bool(values.get("yaw_rate_rps")), translation=any(values.get(k,0) for k in ("forward_mps","right_mps","up_mps")),
-                        travel_effect=effect.get("travel_effect"), latency_seconds=result["latency_seconds"],
-                        error=result.get("error"), cost_usd=result.get("usage",{}).get("cost",0))
+                    row = dict(
+                        trial=trial,
+                        time=call["time"],
+                        repeat=repeat,
+                        variant=variant,
+                        choice=result.get("choice"),
+                        braking_instructions=args.with_braking,
+                        violations=effect.get("movement_violations"),
+                        pan=bool(values.get("yaw_rate_rps")),
+                        translation=any(
+                            values.get(k, 0) for k in ("forward_mps", "right_mps", "up_mps")
+                        ),
+                        travel_effect=effect.get("travel_effect"),
+                        latency_seconds=result["latency_seconds"],
+                        error=result.get("error"),
+                        cost_usd=result.get("usage", {}).get("cost", 0),
+                    )
                     rows.append(row)
-                    print(json.dumps(row),flush=True)
+                    print(json.dumps(row), flush=True)
     finally:
         gateway.close()
-        (args.out/"results.json").write_text(json.dumps(rows,indent=2)+"\n")
+        (args.out / "results.json").write_text(json.dumps(rows, indent=2) + "\n")
 
 
 if __name__ == "__main__":
