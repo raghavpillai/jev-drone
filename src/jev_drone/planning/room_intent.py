@@ -35,12 +35,13 @@ def describe(state, criteria):
         "crossing_available": "cross_" + door in state["options"],
     }
     for name in ("approach_" + door, "cross_" + door):
-        if name in criteria:
+        if name not in criteria:
+            continue
+        criteria[name] += (
+            " Continues the room leg you selected toward " + previous["leads_to_room"] + "."
+        )
+        if name.startswith("cross_"):
             criteria[name] += (
-                " Continues the room leg you selected toward " + previous["leads_to_room"] + "."
+                " Crossing is available NOW; complete this leg before choosing the following room."
             )
-            if name.startswith("cross_"):
-                criteria[name] += (
-                    " Crossing is available NOW; complete this leg before choosing the following room."
-                )
     return state, criteria

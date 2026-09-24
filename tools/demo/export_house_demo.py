@@ -53,13 +53,14 @@ def main():
                 if any("inward_view_observed" in v for v in memory.values())
                 else None
             )
-            label = (
-                f"Survey {state['sensors']['room']} at " + ", ".join(map(str, option["position"]))
-                if choice.startswith("view_")
-                else f"Enter {option.get('leads_to_room', 'next room')}"
-                if choice.startswith("cross_")
-                else choice.replace("_", " ")
-            )
+            if choice.startswith("view_"):
+                label = f"Survey {state['sensors']['room']} at " + ", ".join(
+                    map(str, option["position"])
+                )
+            elif choice.startswith("cross_"):
+                label = f"Enter {option.get('leads_to_room', 'next room')}"
+            else:
+                label = choice.replace("_", " ")
             intents.append(
                 dict(
                     time=call.get("response_time", call["time"]),

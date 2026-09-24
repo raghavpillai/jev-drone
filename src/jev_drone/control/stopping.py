@@ -2,13 +2,12 @@
 
 
 def required_clearance(requested, measured, frame_age, limits):
-    base = (
-        limits["full_clearance_m"]
-        if abs(requested) > 0.25
-        else limits.get("creep_clearance_m", limits["slow_clearance_m"])
-        if abs(requested) <= 0.1
-        else limits["slow_clearance_m"]
-    )
+    if abs(requested) > 0.25:
+        base = limits["full_clearance_m"]
+    elif abs(requested) <= 0.1:
+        base = limits.get("creep_clearance_m", limits["slow_clearance_m"])
+    else:
+        base = limits["slow_clearance_m"]
     if not limits.get("stopping_margin"):
         return base
     speed = max(abs(requested), abs(measured))

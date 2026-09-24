@@ -40,10 +40,8 @@ def sample_depth(samples, depth, origin, forward, right, up, focal):
     measured[interpolate] += (
         ordered[rows[interpolate], high[interpolate]] - measured[interpolate]
     ) * (rank[interpolate] - low[interpolate])
-    observed = np.zeros(len(samples), dtype=bool)
-    free = observed.copy()
-    surface = observed.copy()
-    observed[indices] = count >= 3
+    free = np.zeros(len(samples), dtype=bool)
+    surface = np.zeros(len(samples), dtype=bool)
     free[indices] = (count >= 3) & (measured >= axial[indices] + 0.035)
     surface[indices] = (count >= 3) & (np.abs(measured - axial[indices]) <= 0.12)
     return free, surface

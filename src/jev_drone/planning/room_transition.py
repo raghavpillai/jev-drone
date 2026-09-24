@@ -37,14 +37,15 @@ def describe(state, criteria, layout):
     }
     state["options"] = {name: dict(option) for name, option in state["options"].items()}
     for name, option in state["options"].items():
-        if option.get("leads_to_room") == origin:
-            option["reverses_completed_crossing"] = True
-            if name in criteria:
-                criteria[name] += (
-                    " This goes BACK to "
-                    + origin
-                    + " across the door you already crossed into "
-                    + room
-                    + ". It is not a continuation of that completed crossing. Use only for deliberate backtracking."
-                )
+        if option.get("leads_to_room") != origin:
+            continue
+        option["reverses_completed_crossing"] = True
+        if name in criteria:
+            criteria[name] += (
+                " This goes BACK to "
+                + origin
+                + " across the door you already crossed into "
+                + room
+                + ". It is not a continuation of that completed crossing. Use only for deliberate backtracking."
+            )
     return state, criteria

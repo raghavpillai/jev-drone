@@ -14,10 +14,6 @@ from jev_drone.gateway import JevGateway, validate_answers
 
 
 def test_gateway_persists_completed_calls_without_credentials(tmp_path):
-    import json
-
-    import httpx
-
     journal = tmp_path / "calls.jsonl"
     gateway = JevGateway(
         "openrouter",
