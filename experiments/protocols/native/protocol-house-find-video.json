@@ -1,0 +1,11 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "find_only": true,
+  "budget_usd_per_trial": 3.5,
+  "description": "Two fresh find-only demonstration missions using the unchanged v36 Jev planner/controller and established eight-room geometry. Hidden workshop target from entry (5811), entry target from workshop (5812). One objective: enter the destination room, find the red item using observations, and make a valid stationary inspection report. No return objective. Preserve both outcomes. Rank strict audit-clean successes first, then verified inspection, fewer contacts/rule violations/false reports, then completion time and path length. These are selected demonstration trials, not a reliability estimate. Fixed 1200 simulated seconds/$3.50 per trial and existing wall watchdog; no policy tuning during the batch.",
+  "trials": [
+    {"case": "house_hidden", "seed": 5811, "seconds": 1200},
+    {"case": "house_reverse", "seed": 5812, "seconds": 1200}
+  ]
+}

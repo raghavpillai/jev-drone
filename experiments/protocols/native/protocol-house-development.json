@@ -1,0 +1,11 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 2.5,
+  "description": "Prospective v26 eight-room development trials. Identical sensing/control limits to v24; generalized architectural layout and explicit room connectivity. Four minimum doorway crossings outbound, over 20 m straight-line displacement, then inspection and return. Not a matched reliability comparison with the smaller house.",
+  "strict_pass": "Every inspection and return; zero native contacts, movement-rule violations, false reports and independent audit problems.",
+  "trials": [
+    {"case": "house_far", "seed": 5101, "seconds": 900},
+    {"case": "house_reverse", "seed": 5102, "seconds": 900}
+  ]
+}

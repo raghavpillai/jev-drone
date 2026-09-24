@@ -1,0 +1,7 @@
+{
+  "control_schema":"joystick-v1",
+  "speed_mps":0.5,
+  "budget_usd_per_trial":3.5,
+  "description":"Prospective v29 comparison. Same v27/v28 furnished scene, hidden target, seed and 1200 s budget. Adds completed-room-transition facts to the Jev planner and annotates reverse doorway options without removing them. Same local control decisions/prompts as v28; the experimental repeated-release annotation is not enabled.",
+  "trials":[{"case":"house_hidden","seed":5111,"seconds":1200}]
+}

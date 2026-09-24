@@ -1,0 +1,7 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 3.5,
+  "description": "Prospective v36 full development trial, same hidden furnished house, seed 5111, 1200 simulated seconds/$3.5/fixed wall watchdog as v34/v35. Retains v35 return semantics. Adds factual permitted single-axis corrections only within 1 m of unfinished position goals when the exact diagonal is blocked/unknown; fixed-heading tasks, occupied endpoints and reached goals are excluded. All controls/clearance constraints unchanged; Jev selects every command. Do not rewrite blocked-path policy outside this fact's scope. Strict all-objectives completion, zero contacts/violations/false reports and clean independent provenance required. Not a fresh reliability sample.",
+  "trials": [{"case": "house_hidden", "seed": 5111, "seconds": 1200}]
+}

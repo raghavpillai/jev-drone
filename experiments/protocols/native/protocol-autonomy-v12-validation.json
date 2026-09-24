@@ -1,0 +1,14 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 0.8,
+  "description": "Prospective fresh-seed validation of intent-v12-transit-options after development on seeds 4751/4752/4753. No policy changes during this batch. Includes ordinary return, hidden-target search, three-room sequence, vertical search and an obstructed doorway. Static obstacles only; moving-actor reliability remains unproven.",
+  "strict_pass": "Every requested inspection and return reported by Jev, supported by front-camera observations and native position; zero contacts, movement-rule violations and audit problems.",
+  "trials": [
+    {"case": "clutter", "seed": 4861, "seconds": 240},
+    {"case": "occluded", "seed": 4862, "seconds": 300},
+    {"case": "sequence", "seed": 4863, "seconds": 360},
+    {"case": "vertical", "seed": 4864, "seconds": 300},
+    {"case": "blocked_door", "seed": 4865, "seconds": 360}
+  ]
+}

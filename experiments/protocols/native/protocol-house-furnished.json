@@ -1,0 +1,11 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 3.5,
+  "description": "Prospective v27 furnished-house trials. Eight rooms, 24x12 m, 3.2 m ceilings, 2.4 m tall doorways. Room-specific collidable furniture and supported inspection markers. Same Jev local controller and sensor limits as v26. Scene differences mean these are not matched controller-only comparisons.",
+  "strict_pass": "Every inspection and return; zero contacts, movement-rule violations, false reports and audit problems.",
+  "trials": [
+    {"case": "house_hidden", "seed": 5111, "seconds": 1200},
+    {"case": "house_reverse", "seed": 5112, "seconds": 1200}
+  ]
+}

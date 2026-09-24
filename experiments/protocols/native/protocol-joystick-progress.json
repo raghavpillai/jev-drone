@@ -1,0 +1,12 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 0.6,
+  "description": "Progress-v2 paired follow-up of stalled sequence/occluded scenes, plus blocked-door and moving-actor challenges. Same control/sensor contract; explicit hover-no-progress and bypass visibility facts, with every action still selected by Jev.",
+  "trials": [
+    {"case": "sequence", "seed": 4722, "seconds": 360},
+    {"case": "occluded", "seed": 4723, "seconds": 300},
+    {"case": "blocked_door", "seed": 4732, "seconds": 300},
+    {"case": "crossing", "seed": 4733, "seconds": 240}
+  ]
+}

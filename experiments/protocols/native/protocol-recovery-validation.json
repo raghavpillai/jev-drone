@@ -1,0 +1,14 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 0.8,
+  "description": "Prospective intent-v23-finite-route-state validation. Jev selects planner task kind, concrete task, bypass route, replanning handoff and every control update. Rendered depth constrains clearance, identifies observed door obstructions, describes candidate route intersections and flags occupied endpoints. Route leg transitions reset progress without serializing infinity. Known room map and remembered estimated flight poses only; no hidden furniture/target map. Same per-case time and API budgets as v14 validation. All five seeds fixed before running; keep runtime policy unchanged during the cohort. Earlier planned v21 validation was canceled before any fresh trial launched.",
+  "strict_pass": "Complete every inspection and return within the declared budgets; zero native contacts, model movement-rule violations, false reports and independent audit problems.",
+  "trials": [
+    {"case": "clutter", "seed": 4931, "seconds": 240},
+    {"case": "occluded", "seed": 4932, "seconds": 300},
+    {"case": "sequence", "seed": 4933, "seconds": 360},
+    {"case": "vertical", "seed": 4934, "seconds": 300},
+    {"case": "blocked_door", "seed": 4935, "seconds": 360}
+  ]
+}

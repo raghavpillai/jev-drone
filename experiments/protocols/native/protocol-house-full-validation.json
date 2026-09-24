@@ -1,0 +1,10 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 3.5,
+  "description": "Prospectively frozen v36 fresh-seed validation, no code/prompt tuning between or from these outcomes. Two complete inspection-and-return missions: hidden workshop target from entry, and reverse launch/entry target. Each 1200 simulated seconds/$3.5/fixed wall watchdog. Seeds change target jitter and sensor realization; furniture layouts remain the established recipes, so this is limited generalization evidence. Strict pass requires every objective, zero contacts/violations/false reports, clean provenance. Preserve failures; do not extend budgets or pool development retries into this denominator.",
+  "trials": [
+    {"case": "house_hidden", "seed": 5311, "seconds": 1200},
+    {"case": "house_reverse", "seed": 5312, "seconds": 1200}
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 1.6,
+  "description": "Longer-horizon development check of the unchanged current v24 controller after its original-budget retries. Repeat occluded 4932 and sequence 4933 with 600 simulated seconds and a 1.60 USD allowance. These are reused scenes and relaxed deadlines, not fresh validation or improvements to the original-budget score. All planning and controls remain Jev. Run after the v24 maneuver check; do not change policy within this cohort.",
+  "strict_pass": "All inspections and return within this separate 600-second budget; zero native contacts, movement-rule violations, false reports and audit problems.",
+  "trials": [
+    {"case": "occluded", "seed": 4932, "seconds": 600},
+    {"case": "sequence", "seed": 4933, "seconds": 600}
+  ]
+}

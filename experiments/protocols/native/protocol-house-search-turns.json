@@ -1,0 +1,7 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 1.4,
+  "description": "Prospective v34 absent-target comparison to v33, same seed 5111, 450 simulated seconds and $1.4 limit. v33 completed the vertical waypoint but then repeated a satisfied look_into_room 59 times during its final 90 seconds. Omit only stationary look tasks whose heading is already within the existing 12-degree completion tolerance while settled with a fresh usable front frame. Preserve every positional task, other headings, control choices, clearance rules and expiry. Jev chooses the next meaningful viewpoint/turn and every control. Evaluate repeated no-op looks, physical path/coverage, false reports, rule violations and provenance. Do not count this easier room-start diagnostic as cross-house success.",
+  "trials": [{"case": "house_search_absent", "seed": 5111, "seconds": 450}]
+}

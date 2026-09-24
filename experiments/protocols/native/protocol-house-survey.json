@@ -1,0 +1,7 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 3.5,
+  "description": "Prospective v30 matched hidden-house comparison: seed 5111, 1200 simulated seconds. Jev chooses every task and control. Changes: house upper candidates 2.2 m, view tasks end facing into room, settled front-camera heading memory and search-phase facts, stage-scoped room intent. Evaluate room arrival, first target detection, valid inspection, full return, path length, contacts, violations and search task stalls separately. One flight is not a reliability estimate.",
+  "trials": [{"case": "house_hidden", "seed": 5111, "seconds": 1200}]
+}

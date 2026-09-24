@@ -1,0 +1,11 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 0.8,
+  "description": "Reused-seed native follow-up for intent-v24-altitude-and-return. Adds explicit unfinished bypass-altitude facts, return-strategy continuity instructions, and a 0.7-second native braking settling allowance. Bypass crossing legs now retain the first leg's altitude even when the parent goal is lower; a 0.9 m step fills the gap between 0.6 and 1.3 m. These geometry corrections were added before any v24 trial launched. Jev still selects every movement and all tasks. Original per-case budgets retained. These two cases are development retries after the v23 fresh validation, not fresh reliability evidence. Start after the unchanged v23 longer-horizon comparison finishes.",
+  "strict_pass": "Complete all inspections and return; zero native contacts, movement-rule violations, false reports and independent audit problems.",
+  "trials": [
+    {"case": "occluded", "seed": 4932, "seconds": 300},
+    {"case": "sequence", "seed": 4933, "seconds": 360}
+  ]
+}

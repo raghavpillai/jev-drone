@@ -1,0 +1,10 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 3.5,
+  "description": "Frozen v39 altitude-access validation: v36 plus factual vertical-movement feasibility and replanning instructions. No command masking, veto, controller override, or new route solver. Jev selects all tasks and controls. Two fresh seeds, established fixed furniture recipes, 1200 sim seconds and unchanged wall watchdog. All objectives, zero contacts/rule violations/false reports and clean provenance required for strict success. No tuning during this batch; preserve every attempt.",
+  "trials": [
+    {"case": "house_hidden", "seed": 5611, "seconds": 1200},
+    {"case": "house_reverse", "seed": 5612, "seconds": 1200}
+  ]
+}

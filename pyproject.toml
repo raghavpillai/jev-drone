@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jev-drone"
+version = "0.1.0"
+description = "Jev-controlled indoor drone navigation in PX4 and Gazebo"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "httpx>=0.28,<0.29",
+    "numpy>=1.24,<2",
+    "pybullet==3.2.7",
+    "scipy>=1.10,<1.16",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "matplotlib>=3.9,<4", "pillow>=10,<12"]
+video = ["playwright>=1.50,<2", "imageio-ffmpeg>=0.5,<1"]
+native = ["pymavlink==2.4.49"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "."]
+addopts = "--import-mode=importlib"
+norecursedirs = ["results", "report", ".sim", ".git", "node_modules"]

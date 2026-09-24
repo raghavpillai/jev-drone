@@ -1,0 +1,12 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 0.5,
+  "description": "Fresh-seed development qualification: Jev selects all mission tasks and local four-axis patches; front-only semantics, six-direction noisy camera depth, native PX4/Gazebo.",
+  "strict_pass": "Every mission stage completed, including observed target inspections and physical return; zero native contacts, rule violations or audit problems.",
+  "trials": [
+    {"case": "clutter", "seed": 4721, "seconds": 240},
+    {"case": "sequence", "seed": 4722, "seconds": 360},
+    {"case": "occluded", "seed": 4723, "seconds": 300}
+  ]
+}

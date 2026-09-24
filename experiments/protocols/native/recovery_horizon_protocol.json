@@ -1,0 +1,11 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 1.6,
+  "description": "Separate longer-horizon experiment with unchanged intent-v23-finite-route-state. Repeat occluded 4932 and blocked_door 4935 with 600 simulated seconds to test whether incomplete missions are merely late or remain stuck. API allowance is raised from 0.8 to 1.6 USD. These are reused-seed development trials, not fresh validation and not passes under the original budgets. The model remains stochastic and simulator timing may vary, so this is not an isolated causal comparison. Launch only after the original five-case validation finishes.",
+  "strict_pass": "Complete all inspections and return under this separate larger budget; zero contacts, movement-rule violations, false reports and audit problems.",
+  "trials": [
+    {"case": "occluded", "seed": 4932, "seconds": 600},
+    {"case": "blocked_door", "seed": 4935, "seconds": 600}
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 0.55,
+  "description": "Exploratory extensions after two successful search-and-return missions: vertical target/overhang, blocked doorway and moving actor. Keep every outcome, including collisions and timeouts.",
+  "trials": [
+    {"case": "vertical", "seed": 4731, "seconds": 300},
+    {"case": "blocked_door", "seed": 4732, "seconds": 300},
+    {"case": "crossing", "seed": 4733, "seconds": 240}
+  ]
+}

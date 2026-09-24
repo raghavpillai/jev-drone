@@ -1,0 +1,13 @@
+{
+  "name": "native-body-pan-and-front-camera-v1",
+  "purpose": "Validate actual Jev-controlled left/right body yaw, heading-relative translation, and front-only target search.",
+  "sensor_contract": "One 137.5-degree body-front RGB-D semantic camera; rear/up/down depth-only obstacle observations; no side cameras. No target detections from auxiliary views.",
+  "control_contract": "Persistent forward_mps, up_mps, yaw_rate_rps. Positive yaw pans left. Independent partial assignments, explicit keep, 0.6-second wall-clock lease, revision checks. All navigation and yaw selected by Jev; PX4 stabilizes only.",
+  "scope": "Three exploratory fresh-seed missions. Different sensing and action space from prior surround tests, not a matched performance comparison. Scripted body calibration is separate from autonomy evidence.",
+  "speed_mps": 0.5,
+  "trials": [
+    {"case": "clutter", "seed": 4601, "seconds": 240, "front_controls": true},
+    {"case": "clutter", "seed": 4602, "seconds": 240, "front_controls": true},
+    {"case": "sequence", "seed": 4603, "seconds": 360, "front_controls": true}
+  ]
+}

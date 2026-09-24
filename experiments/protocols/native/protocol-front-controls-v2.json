@@ -1,0 +1,12 @@
+{
+  "name": "native-front-control-turn-continuation-v2",
+  "purpose": "Follow-up after v1 traces repeatedly alternated pan and brake despite a large heading error.",
+  "change": "Explain persistent turning explicitly, show each choice's geometric turn effect, remove duplicated full effect JSON from criteria, correct legacy camera_turning metadata, and avoid chasing heading noise on nearly vertical goals. Choices remain unfiltered; Jev selects every patch.",
+  "sensor_contract": "Front wide-angle RGB-D supplies all object detections. Rear/up/down depth only; no side cameras.",
+  "scope": "Exploratory follow-up, not a replacement for original outcomes. Same body control mechanism and 0.6-second lease.",
+  "speed_mps": 0.5,
+  "trials": [
+    {"case": "clutter", "seed": 4601, "seconds": 240, "front_controls": true},
+    {"case": "sequence", "seed": 4604, "seconds": 360, "front_controls": true}
+  ]
+}

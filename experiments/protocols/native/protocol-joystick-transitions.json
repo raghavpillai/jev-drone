@@ -1,0 +1,12 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 0.6,
+  "description": "Progress-v4 fresh-seed validation of explicit stop-horizontal/start-vertical choices and minimal changed-channel encoding; previous progress-v3 depth/arrival and room-task rules retained. No controls are filtered or replaced.",
+  "trials": [
+    {"case": "sequence", "seed": 4742, "seconds": 360},
+    {"case": "occluded", "seed": 4743, "seconds": 300},
+    {"case": "clutter", "seed": 4741, "seconds": 240},
+    {"case": "crossing", "seed": 4733, "seconds": 240}
+  ]
+}

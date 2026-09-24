@@ -1,0 +1,12 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 0.65,
+  "description": "Fresh seeds frozen after the control-intent, rotation-proximity, altitude/short-bypass and front-compatible target-approach changes. This cohort is kept separate from development and paired retries.",
+  "strict_pass": "Complete every inspection and the return-to-launch stage; zero native contacts, model-selected movement-rule violations and audit problems.",
+  "trials": [
+    {"case": "clutter", "seed": 4751, "seconds": 240},
+    {"case": "sequence", "seed": 4752, "seconds": 360},
+    {"case": "occluded", "seed": 4753, "seconds": 300}
+  ]
+}

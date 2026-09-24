@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Jev — Decision replay</title>
+  <link rel="stylesheet" href="src/state.css">
+  <script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head>
+<body>
+  <main id="stage" aria-label="Recorded drone flight"></main>
+  <div class="replay-note"><b id="time">00:00</b><span id="playback-note">Recorded simulation · paused</span></div>
+  <aside class="state-rail">
+    <div class="mission-brief"><span class="target-swatch" aria-hidden="true"></span><div><span class="eyebrow">THE MISSION</span><h2 id="mission-objective">Find the red item</h2><p id="mission-instruction">Search the workshop. Finish when found.</p></div></div>
+    <section class="mission"><span class="eyebrow">MISSION STATUS</span><h1 id="mission-phase">Loading</h1><p id="mission-detail"></p></section>
+    <header><span class="signal"></span><h2>Jev / decision state</h2><span class="recorded">REPLAY</span></header>
+    <section class="planner-section">
+      <div class="section-title"><h3><span>01</span> Planner</h3><small id="plan-age">Awaiting decision</small></div>
+      <div class="destination"><span id="plan-room">—</span><span>→</span><b id="plan-destination">—</b></div>
+      <div class="choice-label">SELECTED TASK <span id="plan-mode"></span></div>
+      <p id="plan-choice" class="choice">Awaiting Jev</p>
+      <p id="plan-waypoint" class="muted mono">—</p>
+      <div class="memory"><div><span>Inward views seen</span><b id="views">—</b></div><div><span>Local headings seen</span><b id="headings">—</b></div><div><span>Target evidence</span><b id="evidence">—</b></div></div>
+      <div class="choice-label history-label">RECENT TASK OUTCOMES</div><div id="history" class="history"></div>
+    </section>
+    <section class="local-section">
+      <div class="section-title"><h3><span>02</span> Local controller</h3><small id="local-age">Awaiting decision</small></div>
+      <div class="local-choice"><p id="local-choice" class="choice">Awaiting Jev</p><span id="accepted" class="badge">—</span></div>
+      <p id="local-task" class="muted mono">—</p>
+      <div class="local-facts"><div><span>Goal offset · F / R / U</span><b id="offset">—</b></div><div><span>Heading error</span><b id="heading">—</b></div><div><span>API response</span><b id="latency">—</b></div></div>
+      <div class="choice-label">OBSERVED CLEARANCE · METRES</div>
+      <div id="clearance" class="clearance"></div>
+      <div class="choice-label score-label">RETURNED CHOICE SCORES</div><div id="scores" class="scores"></div>
+    </section>
+    <section class="control-section">
+      <div class="section-title"><h3><span>03</span> Applied controls</h3><small id="control-source">Stopped</small></div>
+      <div id="axes" class="axes"></div>
+      <p id="patch" class="patch mono">No control update yet</p>
+    </section>
+    <footer>Recorded search · PX4 / Gazebo<br>Target glow and furnishings are viewer effects</footer>
+  </aside>
+  <script type="module" src="src/state.js"></script>
+</body>
+</html>

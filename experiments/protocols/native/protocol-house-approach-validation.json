@@ -1,0 +1,10 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 3.5,
+  "description": "Prospective frozen v38 full mission batch on seeds 5511/5512. v37 controls and sensing retained. Jev receives both 1.0 m and 0.65 m architectural doorway approach candidates; both undergo identical observed-depth endpoint checks, and neither is certified free. Explicit door identity preserves crossing intention and obstruction evidence. This was developed from v35/v36 recorded states and v37 route failures; those cases are not v38 holdouts. New seeds vary targets/sensors, not furniture recipes. No intra-batch policy tuning, budget extension, route solver, collision veto or automatic steering. Every task/control remains Jev. Strict pass requires all objectives, no contacts/violations/false reports, and clean independent provenance. Each 1200 simulated seconds, $3.5 and unchanged wall watchdog.",
+  "trials": [
+    {"case": "house_hidden", "seed": 5511, "seconds": 1200},
+    {"case": "house_reverse", "seed": 5512, "seconds": 1200}
+  ]
+}

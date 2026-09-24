@@ -1,0 +1,11 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 0.8,
+  "description": "Reused-seed original-budget check of intent-v25-release-progress. Extends v24 only with explicit facts and instructions for repeated releases of already-zero controls when the drone is settled, its position goal remains unfinished, and a permitted goalward translation exists. Braking, arrival, ready reports and blocked motion remain exempt. Every choice remains available and all controls remain Jev. The additional unknown-path instruction from the offline probe is NOT adopted. This is development, not fresh-seed validation.",
+  "strict_pass": "All inspections and return within the original per-case budgets; zero contacts, movement-rule violations, false reports and audit problems.",
+  "trials": [
+    {"case": "occluded", "seed": 4932, "seconds": 300},
+    {"case": "sequence", "seed": 4933, "seconds": 360}
+  ]
+}

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Jev — Flight replay</title>
+  <link rel="stylesheet" href="src/style.css">
+  <script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head>
+<body>
+  <main id="viewport" aria-label="Interactive 3D drone flight replay"></main>
+  <header class="topbar">
+    <a class="identity" href="./"><span class="mark">j.</span><span>Jev <span class="subbrand">/ Flight replay</span></span></a>
+    <div class="top-actions"><button id="focus" aria-expanded="false" aria-controls="details">Details</button><button id="fullscreen" aria-label="Enter fullscreen" title="Fullscreen"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 6V1h5M10 1h5v5M15 10v5h-5M6 15H1v-5"/></svg></button></div>
+  </header>
+  <section class="mission-panel" aria-label="Mission progress">
+    <span class="eyebrow">THE MISSION</span>
+    <h1 id="mission">Loading mission…</h1>
+    <p id="mission-route"></p>
+    <ol class="steps" aria-label="Mission phases"><li data-phase="navigate">Go to room</li><li data-phase="search">Find marker</li><li data-phase="return">Return</li></ol>
+    <div class="current-action"><span id="room">Entry</span><strong id="now">Starting the flight</strong></div>
+  </section>
+  <aside id="details" class="details" aria-label="Flight details" hidden>
+    <div class="details-heading"><h2>Flight details</h2><button id="close-details" aria-label="Close details">×</button></div>
+    <label class="field-label" for="run">Recorded flight</label>
+    <select id="run" aria-label="Choose recorded flight"><option>Loading flights…</option></select>
+    <div class="result"><span class="field-label">Final result of this recording</span><strong id="outcome">Loading</strong><span id="record-status"></span></div>
+    <div class="metrics"><div><span>Objectives at this time</span><b id="stages"></b></div><div><span>Altitude</span><b><span id="altitude">0</span> m</b></div><div><span>Ground speed</span><b><span id="speed">0</span> m/s</b></div></div>
+    <p id="position" class="mono"></p>
+    <div class="decision"><span class="field-label" id="phase">Jev's task</span><p id="task"></p><small id="survey"></small></div>
+    <div class="decision"><span class="field-label">Last control decision</span><p id="decision"></p></div>
+    <div class="toggles"><label><input id="cutaway" type="checkbox" checked> Cutaway walls</label><label><input id="trail" type="checkbox" checked> Flight trail</label></div>
+    <p class="disclosure">Recorded PX4 / Gazebo simulation. The 3D view reconstructs motion; it is not Jev's sensor feed. Cutaway walls only change the display.</p>
+    <p class="scene-meta"><span id="room-count"></span> · <span id="area"></span></p>
+  </aside>
+  <footer class="transport">
+    <div class="playback-row"><button id="play" class="play" aria-label="Play replay">▶</button><div class="timeline"><div class="time-labels"><span id="elapsed">00:00</span><span id="duration">00:00</span></div><input id="scrub" aria-label="Replay time" type="range" min="0" max="1" step="any" value="0"></div><select id="rate" aria-label="Playback speed"><option value="1">1×</option><option value="2">2×</option><option value="4" selected>4×</option><option value="8">8×</option><option value="16">16×</option></select><button id="restart" aria-label="Restart replay" title="Restart">↺</button></div>
+    <div class="camera-row"><nav class="views" aria-label="Camera view"><button data-view="chase" class="active" aria-pressed="true">Follow drone</button><button data-view="orbit" aria-pressed="false">Explore house</button><button data-view="fpv" aria-pressed="false">Drone view</button></nav><span id="view-note">Following the recorded flight</span></div>
+  </footer>
+  <div id="loading" role="status"><span class="loader"></span><p>Opening the house</p></div>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

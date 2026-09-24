@@ -1,0 +1,7 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 3.5,
+  "description": "Prospective v35 full search-and-return comparison to the v34 reference: identical furnished hidden house, seed 5111, 1200 simulated seconds, $3.5 and fixed wall watchdog. Return intent prioritizes reaching launch room through model-chosen doorways; retrace coordinates across room boundaries are labeled; retracing remains local fallback rather than mandatory replay of search detours. Object-search/approach task categories are inapplicable to dock and omitted during return. No route solver, local controller changes, hidden furniture/target inputs, extra movement actions or relaxed criteria. Strict pass requires all objectives including return, zero contacts/violations/false reports and clean provenance. Reused development seed; separate from fresh validation.",
+  "trials": [{"case": "house_hidden", "seed": 5111, "seconds": 1200}]
+}

@@ -1,0 +1,10 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 3.5,
+  "description": "Prospective frozen v37 batch: two full inspection-and-return missions on new target/sensor seeds, unchanged furniture recipes. Includes v36 semantics, explicit opening-centerline strafe facts (without rewriting far-waypoint travel effects), and Jev-selectable 0.08 rad/s fine pan controls for final alignment. Developed using recorded v36 validation states; v36 remains a separate historical frozen batch. No tuning within this batch or extending budgets. All planner/navigation control choices remain Jev. Strict pass requires all objectives, no contacts, movement violations or false reports, and clean independent provenance. Each 1200 simulated seconds, $3.5, fixed twice-sim-plus-20 wall watchdog.",
+  "trials": [
+    {"case": "house_hidden", "seed": 5411, "seconds": 1200},
+    {"case": "house_reverse", "seed": 5412, "seconds": 1200}
+  ]
+}

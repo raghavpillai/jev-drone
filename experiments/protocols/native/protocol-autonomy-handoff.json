@@ -1,0 +1,10 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 0.65,
+  "description": "Development replay of two previously failed seeds after observed-objective event handoffs and planner instruction changes. Not fresh validation.",
+  "trials": [
+    {"case": "clutter", "seed": 4751, "seconds": 240},
+    {"case": "occluded", "seed": 4753, "seconds": 300}
+  ]
+}

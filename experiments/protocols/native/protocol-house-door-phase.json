@@ -1,0 +1,7 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 3.5,
+  "description": "Prospective v28 repeated-seed comparison on the v27 furnished house. Same sensing, scene recipe, mission and budget; adds explicit doorway heading/centerline/altitude phase facts and instructions. Every phase still requires Jev controls. A separate native 10-maneuver course precedes the mission.",
+  "trials": [{"case":"house_hidden","seed":5111,"seconds":1200}]
+}

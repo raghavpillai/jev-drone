@@ -1,0 +1,11 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 3.5,
+  "reference_source": "results/px4-house-v36-validation/house_hidden-5311/source",
+  "description": "Prospectively declared paired reference for the frozen v39 batch, using the exact v36 source mounted read-only. Same hidden/reverse cases and seeds 5611/5612, 1200 sim seconds and $3.50 each; fixed original watchdog. Declared after v39 launch, before any v39 final outcome; no policy tuning. These reduce seed confounding but API/simulator timing and shared-host concurrency remain uncontrolled. Preserve failures and independent audits; do not pool with original v36 qualification.",
+  "trials": [
+    {"case": "house_hidden", "seed": 5611, "seconds": 1200},
+    {"case": "house_reverse", "seed": 5612, "seconds": 1200}
+  ]
+}

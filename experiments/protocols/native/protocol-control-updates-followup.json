@@ -1,0 +1,14 @@
+{
+  "name": "px4-control-updates-fresh-pair-followup",
+  "hypothesis": "Check whether the initial partial-update successes repeat on fresh sequence and blackout seeds.",
+  "primary_outcome": "Paired strict pass: mission success, no contacts, no clearance/axis-rule violations, independent command audit passes.",
+  "scope": "Registered after seven of eight first-cohort outcomes were known. Separate exploratory follow-up, never a replacement for failures. No policy changes affecting speed=0.5. Source snapshots retain all revisions.",
+  "action_facts": true,
+  "speed_mps": 0.5,
+  "trials": [
+    {"case": "sequence", "seed": 4505, "seconds": 240, "control_interface": "patch"},
+    {"case": "sequence", "seed": 4505, "seconds": 240, "control_interface": "full"},
+    {"case": "blackout", "seed": 4506, "seconds": 180, "control_interface": "full"},
+    {"case": "blackout", "seed": 4506, "seconds": 180, "control_interface": "patch"}
+  ]
+}

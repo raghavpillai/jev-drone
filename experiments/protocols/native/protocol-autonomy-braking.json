@@ -1,0 +1,11 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 0.65,
+  "description": "Development replay of three failed/violating seeds after event handoffs, explicit braking guidance, objective-aware local control, and doorway passage goal regions.",
+  "trials": [
+    {"case": "clutter", "seed": 4751, "seconds": 240},
+    {"case": "occluded", "seed": 4753, "seconds": 300},
+    {"case": "sequence", "seed": 4752, "seconds": 360}
+  ]
+}

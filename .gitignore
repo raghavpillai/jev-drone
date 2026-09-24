@@ -1,0 +1,30 @@
+# Local credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Generated experiments, reports and simulator checkout
+/results/
+/report/
+/.sim/
+/demo/data/local/
+/demo/data/generated/
+
+# Dependencies and build caches
+.venv*/
+node_modules/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.egg-info/
+/build/
+/dist/
+.DS_Store
+
+# Local captures and logs
+*.mp4
+*.webm
+*.log
+*.framemd5

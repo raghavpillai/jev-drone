@@ -1,0 +1,10 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 0.65,
+  "description": "Development tests of explicit observed-viewpoint search memory atop event handoffs and braking/doorway fixes. Optional-heading experiment was rejected because its offline choices violated clearance rules.",
+  "trials": [
+    {"case": "occluded", "seed": 4753, "seconds": 300},
+    {"case": "sequence", "seed": 4752, "seconds": 360}
+  ]
+}

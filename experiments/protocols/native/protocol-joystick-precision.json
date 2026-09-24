@@ -1,0 +1,11 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 0.65,
+  "description": "Intent-v7 paired static tasks with camera-derived proximity for yaw, 15cm altitude arrival tolerance, and Jev-selectable 0.6m or 1.3m bypasses. Four signed body axes, explicit joint intents, sparse delta encoding; no steering fallback or collision veto.",
+  "trials": [
+    {"case": "occluded", "seed": 4743, "seconds": 300},
+    {"case": "sequence", "seed": 4722, "seconds": 360},
+    {"case": "clutter", "seed": 4741, "seconds": 240}
+  ]
+}

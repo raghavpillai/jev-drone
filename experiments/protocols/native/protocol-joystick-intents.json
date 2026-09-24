@@ -1,0 +1,11 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 0.6,
+  "description": "Intent-v5 explicit desired stick states compiled to minimal deltas; movement and pan choices release unrelated axes, four explicit slow forward/backward arcs retain simultaneous pan capability, and per-axis releases/keep remain available. Paired static-scene retries of the previous failure modes.",
+  "trials": [
+    {"case": "sequence", "seed": 4722, "seconds": 360},
+    {"case": "occluded", "seed": 4743, "seconds": 300},
+    {"case": "clutter", "seed": 4741, "seconds": 240}
+  ]
+}

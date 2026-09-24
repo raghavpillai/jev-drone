@@ -1,0 +1,7 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 1.4,
+  "description": "Prospective v33 absent-target comparison to v32, same scene/seed 5111/450 s/$1.4. Keeps 16 architectural viewpoint candidates. Fixes the observed 90-second turning loop on a nearly vertical waypoint: after horizontal arrival, expose unfinished altitude and defer final camera heading. Jev still selects every axis update; candidate choices, clearance rules and deadlines remain unchanged. Track first viewpoint completion, angular wandering, distinct viewpoints, time to front-depth coverage, repeated tasks, false reports and independent control/source audit. Fixed-heading doorway and qualification tasks retain their heading requirements.",
+  "trials": [{"case": "house_search_absent", "seed": 5111, "seconds": 450}]
+}

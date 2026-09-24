@@ -1,0 +1,41 @@
+[
+  {
+    "path": "data/px4-house-v39-validation--house_hidden-5611.json",
+    "label": "v39 / house_hidden-5611 \u00b7 success",
+    "success": true,
+    "safety_failure": false,
+    "diagnostic": false
+  },
+  {
+    "path": "data/px4-house-find-video--house_hidden-5811.json",
+    "label": "v36 / house_hidden-5811 \u00b7 success",
+    "success": true,
+    "safety_failure": false,
+    "diagnostic": false
+  },
+  {
+    "path": "data/px4-house-find-video--house_reverse-5812.json",
+    "label": "v36 / house_reverse-5812 \u00b7 success",
+    "success": true,
+    "safety_failure": false,
+    "diagnostic": false
+  },
+  {
+    "path": "data/px4-house-v39-validation--house_reverse-5612.json",
+    "label": "v39 / house_reverse-5612 \u00b7 timeout",
+    "success": false,
+    "safety_failure": false,
+    "diagnostic": false
+  },
+  {
+    "path": "data/px4-house-v38-validation--house_reverse-5512.json",
+    "label": "v38 / house_reverse-5512 \u00b7 success",
+    "success": true,
+    "safety_failure": true,
+    "diagnostic": false
+  },
+  {
+    "path": "data/scene.json",
+    "label": "Explore furnished house \u00b7 scene preview"
+  }
+]

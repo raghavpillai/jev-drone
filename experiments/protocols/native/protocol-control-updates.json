@@ -1,0 +1,20 @@
+{
+  "name": "px4-full-versus-partial-control-updates-v1",
+  "hypothesis": "Jev can maintain a persistent velocity state and choose only changed channels without degrading mission success or safety.",
+  "primary_outcome": "Paired strict pass: mission success, no contacts, no clearance/axis-rule violations, independent command audit passes.",
+  "secondary_outcomes": ["mission duration", "API latency", "control changes versus confirmations", "assigned channels", "cost", "lease expirations", "stale revision rejections"],
+  "controls": "Same cameras, action facts, planner, rooms, reachable single-axis velocities, speed, 0.6 s lease and request cadence. Both arms receive current control state and resulting vectors. Patch offers minimal absolute assignments and keep_controls. No veto or automatic steering.",
+  "scope": "Exploratory four paired scenes, not a reliability estimate. Pair seed controls layout, not stochastic model/network/physics execution. Combined-axis plumbing has a separate scripted native check. No yaw-rate or raw motor control.",
+  "action_facts": true,
+  "speed_mps": 0.5,
+  "trials": [
+    {"case": "clutter", "seed": 4501, "seconds": 180, "control_interface": "full"},
+    {"case": "clutter", "seed": 4501, "seconds": 180, "control_interface": "patch"},
+    {"case": "clutter", "seed": 4502, "seconds": 180, "control_interface": "patch"},
+    {"case": "clutter", "seed": 4502, "seconds": 180, "control_interface": "full"},
+    {"case": "sequence", "seed": 4503, "seconds": 240, "control_interface": "full"},
+    {"case": "sequence", "seed": 4503, "seconds": 240, "control_interface": "patch"},
+    {"case": "blackout", "seed": 4504, "seconds": 180, "control_interface": "patch"},
+    {"case": "blackout", "seed": 4504, "seconds": 180, "control_interface": "full"}
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "px4-motion-followup",
+  "change": "Correct predictor body radius from PyBullet's 0.30 m to the PX4 frontend's 0.40 m; compare linear and uncertain forecasts with action facts enabled",
+  "interpretation": "One matched actor phase; diagnostic only. Neither forecast is ground-truth perception.",
+  "speed_mps": 0.5,
+  "action_facts": true,
+  "trials": [
+    {"case": "crossing", "seed": 4407, "seconds": 180, "tracking": true, "prediction": "linear"},
+    {"case": "crossing", "seed": 4407, "seconds": 180, "tracking": true, "prediction": "uncertain"}
+  ]
+}

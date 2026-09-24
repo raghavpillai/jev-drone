@@ -1,0 +1,19 @@
+{
+  "name": "px4-gazebo-challenge-v1",
+  "policy": "Existing Jev v4 planner and pilot, six body-fixed RGB-D cameras, no action veto or route solver",
+  "qualification": "PX4 calibration-04 and native propeller-contact check-04 passed before this protocol",
+  "bootstrap": "Scripted PX4 arming/takeoff to 1.3 m precedes the timed Jev mission",
+  "strict_pass": "Mission success, zero native contacts, zero audited clearance/axis violations",
+  "speed_mps": 0.5,
+  "command_lease_wall_seconds": 0.6,
+  "trials": [
+    {"case": "clutter", "seed": 4301, "seconds": 180},
+    {"case": "overhang", "seed": 4302, "seconds": 180},
+    {"case": "occluded", "seed": 4303, "seconds": 180},
+    {"case": "sequence", "seed": 4304, "seconds": 240},
+    {"case": "vertical", "seed": 4305, "seconds": 180},
+    {"case": "blocked_door", "seed": 4306, "seconds": 240},
+    {"case": "crossing", "seed": 4307, "seconds": 180, "tracking": true},
+    {"case": "blackout", "seed": 4308, "seconds": 180}
+  ]
+}

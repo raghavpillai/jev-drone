@@ -1,0 +1,13 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 0.6,
+  "description": "Progress-v3 paired development: distinguish arrived/blocked/unobserved paths from rendered depth, account for progress to Jev-selected detours, retain bypass history, and offer direct marker approach in its room only. Every navigation action remains Jev-selected.",
+  "trials": [
+    {"case": "sequence", "seed": 4722, "seconds": 360},
+    {"case": "occluded", "seed": 4723, "seconds": 300},
+    {"case": "vertical", "seed": 4731, "seconds": 300},
+    {"case": "blocked_door", "seed": 4732, "seconds": 300},
+    {"case": "crossing", "seed": 4733, "seconds": 240}
+  ]
+}

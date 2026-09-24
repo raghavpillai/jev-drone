@@ -1,0 +1,14 @@
+{
+  "name": "px4-action-facts-followup",
+  "change": "Append explicit clearance and axis-change rule facts to each movement choice. No filtering, override or route solver.",
+  "strict_pass": "Mission success, zero native contacts, zero audited clearance/axis violations",
+  "interpretation": "Two matched-scene repetitions and two new seeds; exploratory, not a causal estimate or reliability rate",
+  "action_facts": true,
+  "speed_mps": 0.5,
+  "trials": [
+    {"case": "clutter", "seed": 4301, "seconds": 180},
+    {"case": "sequence", "seed": 4304, "seconds": 240},
+    {"case": "clutter", "seed": 4401, "seconds": 180},
+    {"case": "sequence", "seed": 4402, "seconds": 240}
+  ]
+}

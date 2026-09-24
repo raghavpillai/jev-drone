@@ -1,0 +1,10 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 0.65,
+  "description": "Development replay with intermediate transit goals during return and initial path clearance from current rendered depth. Search, tasks, and controls are all Jev decisions.",
+  "trials": [
+    {"case": "sequence", "seed": 4752, "seconds": 360},
+    {"case": "occluded", "seed": 4753, "seconds": 300}
+  ]
+}

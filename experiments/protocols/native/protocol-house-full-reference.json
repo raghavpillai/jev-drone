@@ -1,0 +1,7 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 3.5,
+  "description": "Prospective full-mission reference for the unmodified v34 policy. Furnished hidden-target house, seed 5111, 1200 simulated seconds and fixed wall watchdog. Require valid inspection AND return, no contacts, clearance violations, false reports or provenance failures. Preserve every outcome. This reused-seed development flight is not a held-out reliability estimate.",
+  "trials": [{"case": "house_hidden", "seed": 5111, "seconds": 1200}]
+}

@@ -1,0 +1,34 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 0.8,
+  "description": "Prospective fresh-seed validation of intent-v14-room-intent: Jev chooses task family, concrete task and every control update; prior Jev-selected room legs remain explicit until entering that room. Frozen before any of these five seeds run. Executed policy remains unchanged throughout this batch.",
+  "strict_pass": "Complete all inspections and return; zero native contacts, model movement-rule violations, false reports and independent audit problems.",
+  "trials": [
+    {
+      "case": "clutter",
+      "seed": 4871,
+      "seconds": 240
+    },
+    {
+      "case": "occluded",
+      "seed": 4872,
+      "seconds": 300
+    },
+    {
+      "case": "sequence",
+      "seed": 4873,
+      "seconds": 360
+    },
+    {
+      "case": "vertical",
+      "seed": 4874,
+      "seconds": 300
+    },
+    {
+      "case": "blocked_door",
+      "seed": 4875,
+      "seconds": 360
+    }
+  ]
+}

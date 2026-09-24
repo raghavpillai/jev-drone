@@ -1,0 +1,21 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 3.5,
+  "reference_source": "results/policy-v40-altitude-scope/source",
+  "description": "Frozen v40 correction scopes altitude-access instructions to horizontal arrival tolerance. Same v36 flight system plus scoped facts; no masking/veto or extra doorway heights. Reverse seed 5612 is a development regression repeat after v39 failure; hidden seed 5711 is a fresh-seed validation, reported separately. 1200 sim seconds/$3.5/original watchdog each. No tuning during runs; preserve all outcomes and audit every command.",
+  "trials": [
+    {
+      "case": "house_reverse",
+      "seed": 5612,
+      "seconds": 1200,
+      "population": "development regression repeat"
+    },
+    {
+      "case": "house_hidden",
+      "seed": 5711,
+      "seconds": 1200,
+      "population": "fresh-seed validation"
+    }
+  ]
+}

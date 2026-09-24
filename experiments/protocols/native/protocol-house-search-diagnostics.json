@@ -1,0 +1,10 @@
+{
+  "control_schema": "joystick-v1",
+  "speed_mps": 0.5,
+  "budget_usd_per_trial": 1.4,
+  "description": "Prospective v30 search diagnostics, starting inside workshop at 19.1,9,1.3. Same furnished occluder layout and seed as hidden mission. Run sequentially alongside the matched mission, maximum two native containers total. Hidden case measures discovery, inspection and return; absent case measures front-camera pose coverage, inward surveys, repeated tasks, room departures and false inspection reports. An absent target must never be reported found. Heading coverage is not proof of visibility behind furniture. Do not compare easier starts to cross-house mission success rates.",
+  "trials": [
+    {"case": "house_search", "seed": 5111, "seconds": 450},
+    {"case": "house_search_absent", "seed": 5111, "seconds": 450}
+  ]
+}
